@@ -16,7 +16,7 @@ Config Repo 연결 시 서비스 설정 파일 이름: `booking-payment-service.
 
 ## 서비스 레포 생성 후
 
-[서비스 초기 설정 가이드](docs/INITIAL_SETUP.md)에 따라 다음 항목을 변경합니다.
+서비스 레포를 생성한 뒤에는 다음 항목을 변경합니다.
 
 - Gradle 프로젝트 이름
 - Java 패키지
