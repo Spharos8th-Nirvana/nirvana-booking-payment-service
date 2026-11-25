@@ -10,7 +10,7 @@
 
 초기 설정 검증용 서비스이며 비즈니스 기능은 아직 구현하지 않았습니다.
 포트는 임시값이며 담당자·백업 리뷰어·세부 데이터 소유 범위는 미정입니다.
-현재 기본 local 실행에는 JDK 21이 필요하며 외부 인프라 연결은 추가하지 않았습니다.
+현재 기본 local 실행에는 JDK 21과 로컬 MySQL(`nirvana_booking` 스키마)이 필요합니다.
 헬스 체크: http://localhost:8083/actuator/health
 Config Repo 연결 시 서비스 설정 파일 이름: `booking-payment-service.yml` (파일 생성·연동은 별도 작업)
 
@@ -36,6 +36,31 @@ Config Repo 연결 시 서비스 설정 파일 이름: `booking-payment-service.
 - Windows Git Bash: `./gradlew bootRun`
 - 기본 local 프로필은 Config Server 없이 시작하며 Swagger UI를 활성화합니다.
 - 다른 프로필에서는 API 문서와 Swagger UI가 기본으로 비활성화됩니다.
+
+### 로컬 DB (MySQL)
+
+local 프로필은 `localhost:13308`의 `nirvana_booking` 스키마에 접속합니다. 아래 값은 로컬 전용 기본값입니다.
+
+1. MySQL 컨테이너를 실행합니다.
+
+   ```bash
+   docker run -d --name booking-mysql -p 13308:3306 \
+     -e MYSQL_ROOT_PASSWORD=root \
+     -e MYSQL_DATABASE=nirvana_booking \
+     -e MYSQL_USER=booking -e MYSQL_PASSWORD=booking \
+     mysql:8.0
+   ```
+
+2. 스키마 DDL(`nirvana-app/db/schema/07_booking.sql`)을 적용합니다. `<schema-dir>`은 DDL 폴더 경로입니다.
+
+   ```bash
+   docker exec -i booking-mysql mysql -ubooking -pbooking nirvana_booking < <schema-dir>/07_booking.sql
+   ```
+
+3. `./gradlew bootRun` 후 `GET /actuator/health`의 `db`가 `UP`인지 확인합니다.
+
+- 접속 정보는 환경변수 `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD`로 바꿀 수 있습니다.
+- JPA `ddl-auto`는 `validate`입니다. 테이블은 DDL로 만들고 애플리케이션이 생성하지 않습니다.
 
 ### Config Server 사용
 
