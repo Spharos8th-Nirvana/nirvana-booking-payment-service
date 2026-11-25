@@ -25,11 +25,16 @@ dependencies {
     // =========================================================================
     // Spring Boot & Spring Cloud - 웹 API, 모니터링, 중앙 설정
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'     // Spring MVC 기반 REST API와 웹 서버
+    implementation 'org.springframework.boot:spring-boot-starter-validation'  // 요청 DTO @Valid 검증
     implementation 'org.springframework.boot:spring-boot-starter-actuator'   // 헬스체크, 메트릭 등 운영 상태 확인
     implementation 'org.springframework.cloud:spring-cloud-starter-config'  // Config Server에서 서비스 설정 가져오기
     // =========================================================================
     // API 문서화 - OpenAPI / Swagger UI
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.2.0'  // OpenAPI 문서 생성 및 Swagger UI 제공
+    // =========================================================================
+    // 데이터베이스 - JPA, MySQL
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'   // JPA(Hibernate)로 DB 테이블과 객체 연결
+    runtimeOnly 'com.mysql:mysql-connector-j'                                // MySQL 접속 드라이버 (실행할 때만 필요)
     // =========================================================================
     // 반복 코드 줄이기 - Lombok
     compileOnly 'org.projectlombok:lombok'                                   // 컴파일할 때 Lombok 애너테이션 사용
